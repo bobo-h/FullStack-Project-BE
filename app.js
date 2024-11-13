@@ -1,22 +1,26 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 const cors = require("cors");
-const indexRouter = require("./routes/index"); 
+const indexRouter = require("./routes/index");
+
 const app = express();
 
 require("dotenv").config();
 app.use(cors());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(express.json());
 app.use("/api", indexRouter);
 
-// MongoDB 연결 설정
-const mongoURI = process.env.LOCAL_DB_ADDRESS;
+
+const mongoURI = process.env.MONGODB_URI_PROD;
+
 mongoose
   .connect(mongoURI)
   .then(() => console.log("Mongoose connected"))
-  .catch((err) => console.log("DB connection failed:", err));
+  .catch((err) => console.log("DB connection fail", err));
 
-// 서버 실행
-app.listen(4000, ()=>{
-    console.log("server is running on 4000");
+app.listen(process.env.PORT || 5000, () => {
+  console.log("Server is on");
 });
