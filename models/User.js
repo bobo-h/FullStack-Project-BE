@@ -10,7 +10,7 @@ const userSchema = Schema(
     password: { type: String, required: true },
     name: { type: String, required: true },
     birthday: { type: Date, default: null },
-    profileImage: { type: String, default: "" },
+    profileImage: { type: String, default: null },
     level: { type: String, default: "customer" }, // 2types : customer, admin
   },
   { timestamps: true }

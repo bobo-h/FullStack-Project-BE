@@ -1,6 +1,9 @@
 const User = require("../models/User");
 const bcrpyt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const { OAuth2Client } = require("google-auth-library");
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const authController = {};
 
@@ -51,6 +54,25 @@ authController.loginWithGoogle = async (req, res) => {
       .json({ status: "success", user, token: sessionToken });
 
     //토큰발행 리턴
+  } catch (error) {
+    res.status(400).json({ status: "fail", message: error.message });
+  }
+};
+
+// 토큰의 유효성 확인
+authController.authenticate = async (req, res, next) => {
+  try {
+    const tokenString = req.header.authorization;
+    if (!tokenString) throw new Error("토큰을 찾을 수 없습니다.");
+    const token = tokenString.replace("Bearer ", "");
+    jwt.verify(token, JWT_SECRET_KEY, (error, payload) => {
+      if (error)
+        throw new Error(
+          "유효하지 않은 토큰입니다. 로그인을 다시 한번 시도해주세요."
+        );
+      req.userId = payload._id;
+    });
+    next();
   } catch (error) {
     res.status(400).json({ status: "fail", message: error.message });
   }
