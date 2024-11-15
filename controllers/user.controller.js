@@ -48,13 +48,14 @@ userController.editUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, birthday, profileImage } = req.body;
-    let user = await User.findOne(id);
 
-    user.name = name;
-    user.birthday = birthday;
-    user.profileImage = profileImage;
+    if (!name) throw new Error("이름은 필수항목 값입니다.");
 
-    await user.save();
+    const user = await User.findByIdAndUpdate(
+      { _id: id },
+      { name, birthday, profileImage },
+      { new: true }
+    );
 
     res.status(200).json({ status: "success", user });
   } catch (error) {
