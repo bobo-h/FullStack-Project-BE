@@ -4,4 +4,6 @@ const authController = require("../controllers/auth.controller");
 
 const router = express.Router();
 
-router.post("/", authController.authenticate, diaryController.createDiary);
+// router.post("/", authController.authenticate, diaryController.createDiary);
+
+module.exports = router;

@@ -4,8 +4,8 @@ require("dotenv").config();
 const chabotController = {};
 
 // OpenAI API 설정
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY
-const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+// const OPENAI_API_KEY = process.env.OPENAI_API_KEY
+// const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
 //임시 고양이 성격
 const CAT_TYPE = {
